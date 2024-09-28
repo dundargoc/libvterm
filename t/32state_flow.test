@@ -1,28 +1,28 @@
-INIT
-WANTSTATE
+local vt=init()
+local state = wantstate(vt, "")
 
 # Many of these test cases inspired by
 #   https://blueprints.launchpad.net/libvterm/+spec/reflow-cases
 
-!Spillover text marks continuation on second line
-RESET
-PUSH "A"x100
-PUSH "\r\n"
+-- Spillover text marks continuation on second line
+reset(state,screen)
+push "A"x100
+push "\r\n"
   ?lineinfo 0 =
   ?lineinfo 1 = cont
 
-!CRLF in column 80 does not mark continuation
-RESET
-PUSH "B"x80
-PUSH "\r\n"
-PUSH "B"x20
-PUSH "\r\n"
+-- CRLF in column 80 does not mark continuation
+reset(state,screen)
+push "B"x80
+push "\r\n"
+push "B"x20
+push "\r\n"
   ?lineinfo 0 =
   ?lineinfo 1 =
 
-!EL cancels continuation of following line
-RESET
-PUSH "D"x100
+-- EL cancels continuation of following line
+reset(state,screen)
+push "D"x100
   ?lineinfo 1 = cont
-PUSH "\eM\e[79G\e[K"
+push "\x1bM\x1b[79G\x1b[K"
   ?lineinfo 1 =

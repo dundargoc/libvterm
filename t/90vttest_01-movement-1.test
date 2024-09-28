@@ -1,74 +1,74 @@
-INIT
-WANTSTATE
-WANTSCREEN
+local vt=init()
+local state = wantstate(vt, "")
+local screen = wantscreen(vt, "")
 
-RESET
+reset(state,screen)
 
-PUSH "\e#8"
+push "\x1b#8"
 
-PUSH "\e[9;10H\e[1J"
-PUSH "\e[18;60H\e[0J\e[1K"
-PUSH "\e[9;71H\e[0K"
+push "\x1b[9;10H\x1b[1J"
+push "\x1b[18;60H\x1b[0J\x1b[1K"
+push "\x1b[9;71H\x1b[0K"
 
-$SEQ 10 16: PUSH "\e[\#;10H\e[1K\e[\#;71H\e[0K"
+$SEQ 10 16: push "\x1b[\#;10H\x1b[1K\x1b[\#;71H\x1b[0K"
 
-PUSH "\e[17;30H\e[2K"
+push "\x1b[17;30H\x1b[2K"
 
-$SEQ 1 80: PUSH "\e[24;\#f*\e[1;\#f*"
+$SEQ 1 80: push "\x1b[24;\#f*\x1b[1;\#f*"
 
-PUSH "\e[2;2H"
+push "\x1b[2;2H"
 
-$REP 22: PUSH "+\e[1D\eD"
+$REP 22: push "+\x1b[1D\x1bD"
 
-PUSH "\e[23;79H"
-$REP 22: PUSH "+\e[1D\eM"
+push "\x1b[23;79H"
+$REP 22: push "+\x1b[1D\x1bM"
 
-PUSH "\e[2;1H"
-$SEQ 2 23: PUSH "*\e[\#;80H*\e[10D\eE"
+push "\x1b[2;1H"
+$SEQ 2 23: push "*\x1b[\#;80H*\x1b[10D\x1bE"
 
-PUSH "\e[2;10H\e[42D\e[2C"
-$REP 76: PUSH "+\e[0C\e[2D\e[1C"
+push "\x1b[2;10H\x1b[42D\x1b[2C"
+$REP 76: push "+\x1b[0C\x1b[2D\x1b[1C"
 
-PUSH "\e[23;70H\e[42C\e[2D"
+push "\x1b[23;70H\x1b[42C\x1b[2D"
 
-$REP 76: PUSH "+\e[1D\e[1C\e[0D\b"
+$REP 76: push "+\x1b[1D\x1b[1C\x1b[0D\b"
 
-PUSH "\e[1;1H"
-PUSH "\e[10A"
-PUSH "\e[1A"
-PUSH "\e[0A"
-PUSH "\e[24;80H"
-PUSH "\e[10B"
-PUSH "\e[1B"
-PUSH "\e[0B"
-PUSH "\e[10;12H"
+push "\x1b[1;1H"
+push "\x1b[10A"
+push "\x1b[1A"
+push "\x1b[0A"
+push "\x1b[24;80H"
+push "\x1b[10B"
+push "\x1b[1B"
+push "\x1b[0B"
+push "\x1b[10;12H"
 
-$REP 58: PUSH " "
-PUSH "\e[1B\e[58D"
+$REP 58: push " "
+push "\x1b[1B\x1b[58D"
 
-$REP 58: PUSH " "
-PUSH "\e[1B\e[58D"
+$REP 58: push " "
+push "\x1b[1B\x1b[58D"
 
-$REP 58: PUSH " "
-PUSH "\e[1B\e[58D"
+$REP 58: push " "
+push "\x1b[1B\x1b[58D"
 
-$REP 58: PUSH " "
-PUSH "\e[1B\e[58D"
+$REP 58: push " "
+push "\x1b[1B\x1b[58D"
 
-$REP 58: PUSH " "
-PUSH "\e[1B\e[58D"
+$REP 58: push " "
+push "\x1b[1B\x1b[58D"
 
-$REP 58: PUSH " "
-PUSH "\e[1B\e[58D"
+$REP 58: push " "
+push "\x1b[1B\x1b[58D"
 
-PUSH "\e[5A\e[1CThe screen should be cleared,  and have an unbroken bor-"
-PUSH "\e[12;13Hder of *'s and +'s around the edge,   and exactly in the"
-PUSH "\e[13;13Hmiddle  there should be a frame of E's around this  text"
-PUSH "\e[14;13Hwith  one (1) free position around it.    Push <RETURN>"
+push "\x1b[5A\x1b[1CThe screen should be cleared,  and have an unbroken bor-"
+push "\x1b[12;13Hder of *'s and +'s around the edge,   and exactly in the"
+push "\x1b[13;13Hmiddle  there should be a frame of E's around this  text"
+push "\x1b[14;13Hwith  one (1) free position around it.    Push <RETURN>"
 
 # And the result is...
 
-!Output
+-- Output
             ?screen_row  0 = "********************************************************************************"
             ?screen_row  1 = "*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*"
 $SEQ  2  7: ?screen_row \# = "*+                                                                            +*"

@@ -1,89 +1,89 @@
-INIT
-UTF8 1
-WANTSTATE
+local vt=init()
+vterm.vterm_set_utf8(vt, true)
+local state = wantstate(vt, "")
 
-!Set clipboard; final chunk len 4
-PUSH "\e]52;c;SGVsbG8s\e\\"
+-- Set clipboard; final chunk len 4
+push "\x1b]52;c;SGVsbG8s\x1b\\"
   selection-set mask=0001 ["Hello,"]
 
-!Set clipboard; final chunk len 3
-PUSH "\e]52;c;SGVsbG8sIHc=\e\\"
+-- Set clipboard; final chunk len 3
+push "\x1b]52;c;SGVsbG8sIHc=\x1b\\"
   selection-set mask=0001 ["Hello, w"]
 
-!Set clipboard; final chunk len 2
-PUSH "\e]52;c;SGVsbG8sIHdvcmxkCg==\e\\"
+-- Set clipboard; final chunk len 2
+push "\x1b]52;c;SGVsbG8sIHdvcmxkCg==\x1b\\"
   selection-set mask=0001 ["Hello, world\n"]
 
-!Set clipboard; split between chunks
-PUSH "\e]52;c;SGVs"
+-- Set clipboard; split between chunks
+push "\x1b]52;c;SGVs"
   selection-set mask=0001 ["Hel"
-PUSH "bG8s\e\\"
+push "bG8s\x1b\\"
   selection-set mask=0001 "lo,"]
 
-!Set clipboard; split within chunk
-PUSH "\e]52;c;SGVsbG"
+-- Set clipboard; split within chunk
+push "\x1b]52;c;SGVsbG"
   selection-set mask=0001 ["Hel"
-PUSH "8s\e\\"
+push "8s\x1b\\"
   selection-set mask=0001 "lo,"]
 
-!Set clipboard; empty first chunk
-PUSH "\e]52;c;"
-PUSH "SGVsbG8s\e\\"
+-- Set clipboard; empty first chunk
+push "\x1b]52;c;"
+push "SGVsbG8s\x1b\\"
   selection-set mask=0001 ["Hello,"]
 
-!Set clipboard; empty final chunk
-PUSH "\e]52;c;SGVsbG8s"
+-- Set clipboard; empty final chunk
+push "\x1b]52;c;SGVsbG8s"
   selection-set mask=0001 ["Hello,"
-PUSH "\e\\"
+push "\x1b\\"
   selection-set mask=0001 ]
 
-!Set clipboard; longer than buffer
-PUSH "\e]52;c;" . "LS0t"x10 . "\e\\"
+-- Set clipboard; longer than buffer
+push "\x1b]52;c;" . "LS0t"x10 . "\x1b\\"
   selection-set mask=0001 ["-"x15
   selection-set mask=0001 "-"x15]
 
-!Clear clipboard
-PUSH "\e]52;c;\e\\"
+-- Clear clipboard
+push "\x1b]52;c;\x1b\\"
   selection-set mask=0001 []
 
-!Set invalid data clears and ignores
-PUSH "\e]52;c;SGVs*SGVsbG8s\e\\"
+-- Set invalid data clears and ignores
+push "\x1b]52;c;SGVs*SGVsbG8s\x1b\\"
   selection-set mask=0001 []
 
-!Query clipboard
-PUSH "\e]52;c;?\e\\"
+-- Query clipboard
+push "\x1b]52;c;?\x1b\\"
   selection-query mask=0001
 
-!Send clipboard; final chunk len 4
+-- Send clipboard; final chunk len 4
 SELECTION 1 ["Hello,"]
-  output "\e]52;c;"
+  output "\x1b]52;c;"
   output "SGVsbG8s"
-  output "\e\\"
+  output "\x1b\\"
 
-!Send clipboard; final chunk len 3
+-- Send clipboard; final chunk len 3
 SELECTION 1 ["Hello, w"]
-  output "\e]52;c;"
+  output "\x1b]52;c;"
   output "SGVsbG8s"
-  output "IHc=\e\\"
+  output "IHc=\x1b\\"
 
-!Send clipboard; final chunk len 2
+-- Send clipboard; final chunk len 2
 SELECTION 1 ["Hello, world\n"]
-  output "\e]52;c;"
+  output "\x1b]52;c;"
   output "SGVsbG8sIHdvcmxk"
-  output "Cg==\e\\"
+  output "Cg==\x1b\\"
 
-!Send clipboard; split between chunks
+-- Send clipboard; split between chunks
 SELECTION 1 ["Hel"
-  output "\e]52;c;"
+  output "\x1b]52;c;"
   output "SGVs"
 SELECTION 1  "lo,"]
   output "bG8s"
-  output "\e\\"
+  output "\x1b\\"
 
-!Send clipboard; split within chunk
+-- Send clipboard; split within chunk
 SELECTION 1 ["Hello"
-  output "\e]52;c;"
+  output "\x1b]52;c;"
   output "SGVs"
 SELECTION 1 ","]
   output "bG8s"
-  output "\e\\"
+  output "\x1b\\"

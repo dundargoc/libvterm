@@ -1,63 +1,63 @@
-INIT
-WANTSTATE
+local vt=init()
+local state = wantstate(vt, "")
 
-!DA
-RESET
-PUSH "\e[c"
-  output "\e[?1;2c"
+-- DA
+reset(state,screen)
+push "\x1b[c"
+  output "\x1b[?1;2c"
 
-!XTVERSION
-RESET
-PUSH "\e[>q"
-  output "\eP>|libvterm(0.3)\e\\"
+-- XTVERSION
+reset(state,screen)
+push "\x1b[>q"
+  output "\x1bP>|libvterm(0.3)\x1b\\"
 
-!DSR
-RESET
-PUSH "\e[5n"
-  output "\e[0n"
+-- DSR
+reset(state,screen)
+push "\x1b[5n"
+  output "\x1b[0n"
 
-!CPR
-PUSH "\e[6n"
-  output "\e[1;1R"
-PUSH "\e[10;10H\e[6n"
-  output "\e[10;10R"
+-- CPR
+push "\x1b[6n"
+  output "\x1b[1;1R"
+push "\x1b[10;10H\x1b[6n"
+  output "\x1b[10;10R"
 
-!DECCPR
-PUSH "\e[?6n"
-  output "\e[?10;10R"
+-- DECCPR
+push "\x1b[?6n"
+  output "\x1b[?10;10R"
 
-!DECRQSS on DECSCUSR
-PUSH "\e[3 q"
-PUSH "\eP\$q q\e\\"
-  output "\eP1\$r3 q\e\\"
+-- DECRQSS on DECSCUSR
+push "\x1b[3 q"
+push "\x1bP\$q q\x1b\\"
+  output "\x1bP1\$r3 q\x1b\\"
 
-!DECRQSS on SGR
-PUSH "\e[1;5;7m"
-PUSH "\eP\$qm\e\\"
-  output "\eP1\$r1;5;7m\e\\"
+-- DECRQSS on SGR
+push "\x1b[1;5;7m"
+push "\x1bP\$qm\x1b\\"
+  output "\x1bP1\$r1;5;7m\x1b\\"
 
-!DECRQSS on SGR ANSI colours
-PUSH "\e[0;31;42m"
-PUSH "\eP\$qm\e\\"
-  output "\eP1\$r31;42m\e\\"
+-- DECRQSS on SGR ANSI colours
+push "\x1b[0;31;42m"
+push "\x1bP\$qm\x1b\\"
+  output "\x1bP1\$r31;42m\x1b\\"
 
-!DECRQSS on SGR ANSI hi-bright colours
-PUSH "\e[0;93;104m"
-PUSH "\eP\$qm\e\\"
-  output "\eP1\$r93;104m\e\\"
+-- DECRQSS on SGR ANSI hi-bright colours
+push "\x1b[0;93;104m"
+push "\x1bP\$qm\x1b\\"
+  output "\x1bP1\$r93;104m\x1b\\"
 
-!DECRQSS on SGR 256-palette colours
-PUSH "\e[0;38:5:56;48:5:78m"
-PUSH "\eP\$qm\e\\"
-  output "\eP1\$r38:5:56;48:5:78m\e\\"
+-- DECRQSS on SGR 256-palette colours
+push "\x1b[0;38:5:56;48:5:78m"
+push "\x1bP\$qm\x1b\\"
+  output "\x1bP1\$r38:5:56;48:5:78m\x1b\\"
 
-!DECRQSS on SGR RGB8 colours
-PUSH "\e[0;38:2:24:68:112;48:2:13:57:101m"
-PUSH "\eP\$qm\e\\"
-  output "\eP1\$r38:2:24:68:112;48:2:13:57:101m\e\\"
+-- DECRQSS on SGR RGB8 colours
+push "\x1b[0;38:2:24:68:112;48:2:13:57:101m"
+push "\x1bP\$qm\x1b\\"
+  output "\x1bP1\$r38:2:24:68:112;48:2:13:57:101m\x1b\\"
 
-!S8C1T on DSR
-PUSH "\e G"
-PUSH "\e[5n"
+-- S8C1T on DSR
+push "\x1b G"
+push "\x1b[5n"
   output "\x{9b}0n"
-PUSH "\e F"
+push "\x1b F"

@@ -1,9 +1,9 @@
-INIT
-WANTSCREEN 
+local vt=init()
+local screen = wantscreen(vt, "") 
 
-!Bold extent
-RESET
-PUSH "AB\e[1mCD\e[mE"
+-- Bold extent
+reset(state,screen)
+push "AB\x1b[1mCD\x1b[mE"
   ?screen_attrs_extent 0,0 = 0,0-1,1
   ?screen_attrs_extent 0,1 = 0,0-1,1
   ?screen_attrs_extent 0,2 = 0,2-1,3

@@ -1068,6 +1068,7 @@ int main(int argc, char **argv)
           printf("cont ");
         printf("\n");
       }
+
       else if(strstartswith(line, "?screen_chars ")) {
         assert(screen);
         char *linep = line + 13;
@@ -1075,6 +1076,7 @@ int main(int argc, char **argv)
         size_t len;
         while(linep[0] == ' ')
           linep++;
+
         if(sscanf(linep, "%d,%d,%d,%d", &rect.start_row, &rect.start_col, &rect.end_row, &rect.end_col) == 4)
           ; // fine
         else if(sscanf(linep, "%d", &rect.start_row) == 1) {
@@ -1086,7 +1088,9 @@ int main(int argc, char **argv)
           printf("! screen_chars unrecognised input\n");
           goto abort_line;
         }
+
         len = vterm_screen_get_chars(screen, NULL, 0, rect);
+
         if(len == (size_t)-1)
           printf("! screen_chars error\n");
         else if(len == 0)
@@ -1100,18 +1104,23 @@ int main(int argc, char **argv)
           free(chars);
         }
       }
+
       else if(strstartswith(line, "?screen_text ")) {
         assert(screen);
         char *linep = line + 12;
         VTermRect rect;
         size_t len;
+
         while(linep[0] == ' ')
           linep++;
+
         if(sscanf(linep, "%d,%d,%d,%d", &rect.start_row, &rect.start_col, &rect.end_row, &rect.end_col) < 4) {
           printf("! screen_text unrecognised input\n");
           goto abort_line;
         }
+
         len = vterm_screen_get_text(screen, NULL, 0, rect);
+
         if(len == (size_t)-1)
           printf("! screen_text error\n");
         else if(len == 0)
@@ -1120,8 +1129,10 @@ int main(int argc, char **argv)
           /* Put an overwrite guard at both ends of the buffer */
           unsigned char *buffer = malloc(len + 4);
           unsigned char *text = buffer + 2;
-          text[-2] = 0x55; text[-1] = 0xAA;
-          text[len] = 0x55; text[len+1] = 0xAA;
+          text[-2] = 0x55;
+          text[-1] = 0xAA;
+          text[len] = 0x55;
+          text[len+1] = 0xAA;
 
           vterm_screen_get_text(screen, (char *)text, len, rect);
 
@@ -1136,7 +1147,9 @@ int main(int argc, char **argv)
 
           free(buffer);
         }
+
       }
+
       else if(strstartswith(line, "?screen_cell ")) {
         assert(screen);
         char *linep = line + 12;
@@ -1176,6 +1189,7 @@ int main(int argc, char **argv)
         print_color(&cell.bg);
         printf("\n");
       }
+
       else if(strstartswith(line, "?screen_eol ")) {
         assert(screen);
         char *linep = line + 12;
@@ -1188,6 +1202,7 @@ int main(int argc, char **argv)
         }
         printf("%d\n", vterm_screen_is_eol(screen, pos));
       }
+
       else if(strstartswith(line, "?screen_attrs_extent ")) {
         assert(screen);
         char *linep = line + 21;
@@ -1208,6 +1223,7 @@ int main(int argc, char **argv)
         }
         printf("%d,%d-%d,%d\n", rect.start_row, rect.start_col, rect.end_row, rect.end_col);
       }
+
       else
         printf("?\n");
 

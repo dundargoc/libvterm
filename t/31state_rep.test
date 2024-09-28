@@ -1,128 +1,34 @@
-INIT
-UTF8 1
-WANTSTATE g
+local vt=init()
+vterm.vterm_set_utf8(vt, true)
+local state = wantstate(vt, "g")
 
-!REP no argument
-RESET
-PUSH "a\e[b"
-  putglyph 0x61 1 0,0
-  putglyph 0x61 1 0,1
+-- REP no argument
+reset(state,screen)
+push( "a\x1b[b", 'putglyph 61 1 0,0\nputglyph 61 1 0,1', vt)
 
-!REP zero (zero should be interpreted as one)
-RESET
-PUSH "a\e[0b"
-  putglyph 0x61 1 0,0
-  putglyph 0x61 1 0,1
+-- REP zero (zero should be interpreted as one)
+reset(state,screen)
+push( "a\x1b[0b", 'putglyph 61 1 0,0\nputglyph 61 1 0,1', vt)
 
-!REP lowercase a times two
-RESET
-PUSH "a\e[2b"
-  putglyph 0x61 1 0,0
-  putglyph 0x61 1 0,1
-  putglyph 0x61 1 0,2
+-- REP lowercase a times two
+reset(state,screen)
+push( "a\x1b[2b", 'putglyph 61 1 0,0\nputglyph 61 1 0,1\nputglyph 61 1 0,2', vt)
 
-!REP with UTF-8 1 char
-# U+00E9 = 0xC3 0xA9  name: LATIN SMALL LETTER E WITH ACUTE
-RESET
-PUSH "\xC3\xA9\e[b"
-  putglyph 0xe9 1 0,0
-  putglyph 0xe9 1 0,1
+-- REP with UTF-8 1 char
+-- U+00E9 = C3 A9  name: LATIN SMALL LETTER E WITH ACUTE
+reset(state,screen)
+push( "\xC3\xA9\x1b[b", 'putglyph e9 1 0,0\nputglyph e9 1 0,1', vt)
 
-!REP with UTF-8 wide char
-# U+00E9 = 0xC3 0xA9  name: LATIN SMALL LETTER E WITH ACUTE
-RESET
-PUSH "\xEF\xBC\x90\e[b"
-  putglyph 0xff10 2 0,0
-  putglyph 0xff10 2 0,2
+-- REP with UTF-8 wide char
+-- U+00E9 = C3 A9  name: LATIN SMALL LETTER E WITH ACUTE
+reset(state,screen)
+push( "\xEF\xBC\x90\x1b[b", 'putglyph ff10 2 0,0\nputglyph ff10 2 0,2', vt)
 
-!REP with UTF-8 combining character
-RESET
-PUSH "e\xCC\x81\e[b"
-  putglyph 0x65,0x301 1 0,0
-  putglyph 0x65,0x301 1 0,1
+-- REP with UTF-8 combining character
+reset(state,screen)
+push( "e\xCC\x81\x1b[b", 'putglyph 65,301 1 0,0\nputglyph 65,301 1 0,1', vt)
 
-!REP till end of line
-RESET
-PUSH "a\e[1000bb"
-  putglyph 0x61 1 0,0
-  putglyph 0x61 1 0,1
-  putglyph 0x61 1 0,2
-  putglyph 0x61 1 0,3
-  putglyph 0x61 1 0,4
-  putglyph 0x61 1 0,5
-  putglyph 0x61 1 0,6
-  putglyph 0x61 1 0,7
-  putglyph 0x61 1 0,8
-  putglyph 0x61 1 0,9
-  putglyph 0x61 1 0,10
-  putglyph 0x61 1 0,11
-  putglyph 0x61 1 0,12
-  putglyph 0x61 1 0,13
-  putglyph 0x61 1 0,14
-  putglyph 0x61 1 0,15
-  putglyph 0x61 1 0,16
-  putglyph 0x61 1 0,17
-  putglyph 0x61 1 0,18
-  putglyph 0x61 1 0,19
-  putglyph 0x61 1 0,20
-  putglyph 0x61 1 0,21
-  putglyph 0x61 1 0,22
-  putglyph 0x61 1 0,23
-  putglyph 0x61 1 0,24
-  putglyph 0x61 1 0,25
-  putglyph 0x61 1 0,26
-  putglyph 0x61 1 0,27
-  putglyph 0x61 1 0,28
-  putglyph 0x61 1 0,29
-  putglyph 0x61 1 0,30
-  putglyph 0x61 1 0,31
-  putglyph 0x61 1 0,32
-  putglyph 0x61 1 0,33
-  putglyph 0x61 1 0,34
-  putglyph 0x61 1 0,35
-  putglyph 0x61 1 0,36
-  putglyph 0x61 1 0,37
-  putglyph 0x61 1 0,38
-  putglyph 0x61 1 0,39
-  putglyph 0x61 1 0,40
-  putglyph 0x61 1 0,41
-  putglyph 0x61 1 0,42
-  putglyph 0x61 1 0,43
-  putglyph 0x61 1 0,44
-  putglyph 0x61 1 0,45
-  putglyph 0x61 1 0,46
-  putglyph 0x61 1 0,47
-  putglyph 0x61 1 0,48
-  putglyph 0x61 1 0,49
-  putglyph 0x61 1 0,50
-  putglyph 0x61 1 0,51
-  putglyph 0x61 1 0,52
-  putglyph 0x61 1 0,53
-  putglyph 0x61 1 0,54
-  putglyph 0x61 1 0,55
-  putglyph 0x61 1 0,56
-  putglyph 0x61 1 0,57
-  putglyph 0x61 1 0,58
-  putglyph 0x61 1 0,59
-  putglyph 0x61 1 0,60
-  putglyph 0x61 1 0,61
-  putglyph 0x61 1 0,62
-  putglyph 0x61 1 0,63
-  putglyph 0x61 1 0,64
-  putglyph 0x61 1 0,65
-  putglyph 0x61 1 0,66
-  putglyph 0x61 1 0,67
-  putglyph 0x61 1 0,68
-  putglyph 0x61 1 0,69
-  putglyph 0x61 1 0,70
-  putglyph 0x61 1 0,71
-  putglyph 0x61 1 0,72
-  putglyph 0x61 1 0,73
-  putglyph 0x61 1 0,74
-  putglyph 0x61 1 0,75
-  putglyph 0x61 1 0,76
-  putglyph 0x61 1 0,77
-  putglyph 0x61 1 0,78
-  putglyph 0x61 1 0,79
-  putglyph 0x62 1 1,0
+-- REP till end of line
+reset(state,screen)
+push( "a\x1b[1000bb", 'putglyph 61 1 0,0\nputglyph 61 1 0,1\nputglyph 61 1 0,2\nputglyph 61 1 0,3\nputglyph 61 1 0,4\nputglyph 61 1 0,5\nputglyph 61 1 0,6\nputglyph 61 1 0,7\nputglyph 61 1 0,8\nputglyph 61 1 0,9\nputglyph 61 1 0,10\nputglyph 61 1 0,11\nputglyph 61 1 0,12\nputglyph 61 1 0,13\nputglyph 61 1 0,14\nputglyph 61 1 0,15\nputglyph 61 1 0,16\nputglyph 61 1 0,17\nputglyph 61 1 0,18\nputglyph 61 1 0,19\nputglyph 61 1 0,20\nputglyph 61 1 0,21\nputglyph 61 1 0,22\nputglyph 61 1 0,23\nputglyph 61 1 0,24\nputglyph 61 1 0,25\nputglyph 61 1 0,26\nputglyph 61 1 0,27\nputglyph 61 1 0,28\nputglyph 61 1 0,29\nputglyph 61 1 0,30\nputglyph 61 1 0,31\nputglyph 61 1 0,32\nputglyph 61 1 0,33\nputglyph 61 1 0,34\nputglyph 61 1 0,35\nputglyph 61 1 0,36\nputglyph 61 1 0,37\nputglyph 61 1 0,38\nputglyph 61 1 0,39\nputglyph 61 1 0,40\nputglyph 61 1 0,41\nputglyph 61 1 0,42\nputglyph 61 1 0,43\nputglyph 61 1 0,44\nputglyph 61 1 0,45\nputglyph 61 1 0,46\nputglyph 61 1 0,47\nputglyph 61 1 0,48\nputglyph 61 1 0,49\nputglyph 61 1 0,50\nputglyph 61 1 0,51\nputglyph 61 1 0,52\nputglyph 61 1 0,53\nputglyph 61 1 0,54\nputglyph 61 1 0,55\nputglyph 61 1 0,56\nputglyph 61 1 0,57\nputglyph 61 1 0,58\nputglyph 61 1 0,59\nputglyph 61 1 0,60\nputglyph 61 1 0,61\nputglyph 61 1 0,62\nputglyph 61 1 0,63\nputglyph 61 1 0,64\nputglyph 61 1 0,65\nputglyph 61 1 0,66\nputglyph 61 1 0,67\nputglyph 61 1 0,68\nputglyph 61 1 0,69\nputglyph 61 1 0,70\nputglyph 61 1 0,71\nputglyph 61 1 0,72\nputglyph 61 1 0,73\nputglyph 61 1 0,74\nputglyph 61 1 0,75\nputglyph 61 1 0,76\nputglyph 61 1 0,77\nputglyph 61 1 0,78\nputglyph 61 1 0,79\nputglyph 62 1 1,0', vt)
 

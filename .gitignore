@@ -1,0 +1,14 @@
+compile_commands.json
+.libs
+*.o
+*.lo
+
+/bin/unterm
+/bin/vterm-ctrl
+/bin/vterm-dump
+
+/t/harness
+
+/libvterm.la
+
+/.cache

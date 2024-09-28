@@ -1,156 +1,156 @@
-INIT
-UTF8 1
-WANTSTATE s
+local vt=init()
+vterm.vterm_set_utf8(vt, true)
+local state = wantstate(vt, "") s
 
-!Linefeed
-PUSH "\n"x24
+-- Linefeed
+push "\n"x24
   ?cursor = 24,0
-PUSH "\n"
+push "\n"
   scrollrect 0..25,0..80 => +1,+0
   ?cursor = 24,0
 
-RESET
+reset(state,screen)
 
-!Index
-PUSH "\e[25H"
-PUSH "\eD"
+-- Index
+push "\x1b[25H"
+push "\x1bD"
   scrollrect 0..25,0..80 => +1,+0
 
-RESET
+reset(state,screen)
 
-!Reverse Index
-PUSH "\eM"
+-- Reverse Index
+push "\x1bM"
   scrollrect 0..25,0..80 => -1,+0
 
-RESET
+reset(state,screen)
 
-!Linefeed in DECSTBM
-PUSH "\e[1;10r"
+-- Linefeed in DECSTBM
+push "\x1b[1;10r"
   ?cursor = 0,0
-PUSH "\n"x9
+push "\n"x9
   ?cursor = 9,0
-PUSH "\n"
+push "\n"
   scrollrect 0..10,0..80 => +1,+0
   ?cursor = 9,0
 
-!Linefeed outside DECSTBM
-PUSH "\e[20H"
+-- Linefeed outside DECSTBM
+push "\x1b[20H"
   ?cursor = 19,0
-PUSH "\n"
+push "\n"
   ?cursor = 20,0
 
-!Index in DECSTBM
-PUSH "\e[9;10r"
-PUSH "\e[10H"
-PUSH "\eM"
+-- Index in DECSTBM
+push "\x1b[9;10r"
+push "\x1b[10H"
+push "\x1bM"
   ?cursor = 8,0
-PUSH "\eM"
+push "\x1bM"
   scrollrect 8..10,0..80 => -1,+0
 
-!Reverse Index in DECSTBM
-PUSH "\e[25H"
+-- Reverse Index in DECSTBM
+push "\x1b[25H"
   ?cursor = 24,0
-PUSH "\n"
+push "\n"
   # no scrollrect
   ?cursor = 24,0
 
-!Linefeed in DECSTBM+DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[3;10r\e[10;40s"
-PUSH "\e[10;10H\n"
+-- Linefeed in DECSTBM+DECSLRM
+push "\x1b[?69h"
+push "\x1b[3;10r\x1b[10;40s"
+push "\x1b[10;10H\n"
   scrollrect 2..10,9..40 => +1,+0
 
-!IND/RI in DECSTBM+DECSLRM
-PUSH "\eD"
+-- IND/RI in DECSTBM+DECSLRM
+push "\x1bD"
   scrollrect 2..10,9..40 => +1,+0
-PUSH "\e[3;10H\eM"
+push "\x1b[3;10H\x1bM"
   scrollrect 2..10,9..40 => -1,+0
 
-!DECRQSS on DECSTBM
-PUSH "\eP\$qr\e\\"
-  output "\eP1\$r3;10r\e\\"
+-- DECRQSS on DECSTBM
+push "\x1bP\$qr\x1b\\"
+  output "\x1bP1\$r3;10r\x1b\\"
 
-!DECRQSS on DECSLRM
-PUSH "\eP\$qs\e\\"
-  output "\eP1\$r10;40s\e\\"
+-- DECRQSS on DECSLRM
+push "\x1bP\$qs\x1b\\"
+  output "\x1bP1\$r10;40s\x1b\\"
 
-!Setting invalid DECSLRM with !DECVSSM is still rejected
-PUSH "\e[?69l\e[;0s\e[?69h"
+-- Setting invalid DECSLRM with !DECVSSM is still rejected
+push "\x1b[?69l\x1b[;0s\x1b[?69h"
 
-RESET
+reset(state,screen)
 
-!Scroll Down
-PUSH "\e[S"
+-- Scroll Down
+push "\x1b[S"
   scrollrect 0..25,0..80 => +1,+0
   ?cursor = 0,0
-PUSH "\e[2S"
+push "\x1b[2S"
   scrollrect 0..25,0..80 => +2,+0
   ?cursor = 0,0
-PUSH "\e[100S"
+push "\x1b[100S"
   scrollrect 0..25,0..80 => +25,+0
 
-!Scroll Up
-PUSH "\e[T"
+-- Scroll Up
+push "\x1b[T"
   scrollrect 0..25,0..80 => -1,+0
   ?cursor = 0,0
-PUSH "\e[2T"
+push "\x1b[2T"
   scrollrect 0..25,0..80 => -2,+0
   ?cursor = 0,0
-PUSH "\e[100T"
+push "\x1b[100T"
   scrollrect 0..25,0..80 => -25,+0
 
-!SD/SU in DECSTBM
-PUSH "\e[5;20r"
-PUSH "\e[S"
+-- SD/SU in DECSTBM
+push "\x1b[5;20r"
+push "\x1b[S"
   scrollrect 4..20,0..80 => +1,+0
-PUSH "\e[T"
+push "\x1b[T"
   scrollrect 4..20,0..80 => -1,+0
 
-RESET
+reset(state,screen)
 
-!SD/SU in DECSTBM+DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[3;10r\e[10;40s"
+-- SD/SU in DECSTBM+DECSLRM
+push "\x1b[?69h"
+push "\x1b[3;10r\x1b[10;40s"
   ?cursor = 0,0
-PUSH "\e[3;10H"
+push "\x1b[3;10H"
   ?cursor = 2,9
-PUSH "\e[S"
+push "\x1b[S"
   scrollrect 2..10,9..40 => +1,+0
-PUSH "\e[?69l"
-PUSH "\e[S"
+push "\x1b[?69l"
+push "\x1b[S"
   scrollrect 2..10,0..80 => +1,+0
 
-!Invalid boundaries
-RESET
+-- Invalid boundaries
+reset(state,screen)
 
-PUSH "\e[100;105r\eD"
-PUSH "\e[5;2r\eD"
+push "\x1b[100;105r\x1bD"
+push "\x1b[5;2r\x1bD"
 
-RESET
-WANTSTATE -s+me
+reset(state,screen)
+local state = wantstate(vt, "") -s+me
 
-!Scroll Down move+erase emulation
-PUSH "\e[S"
+-- Scroll Down move+erase emulation
+push "\x1b[S"
   moverect 1..25,0..80 -> 0..24,0..80
   erase 24..25,0..80
   ?cursor = 0,0
-PUSH "\e[2S"
+push "\x1b[2S"
   moverect 2..25,0..80 -> 0..23,0..80
   erase 23..25,0..80
   ?cursor = 0,0
 
-!Scroll Up move+erase emulation
-PUSH "\e[T"
+-- Scroll Up move+erase emulation
+push "\x1b[T"
   moverect 0..24,0..80 -> 1..25,0..80
   erase 0..1,0..80
   ?cursor = 0,0
-PUSH "\e[2T"
+push "\x1b[2T"
   moverect 0..23,0..80 -> 2..25,0..80
   erase 0..2,0..80
   ?cursor = 0,0
 
-!DECSTBM resets cursor position
-PUSH "\e[5;5H"
+-- DECSTBM resets cursor position
+push "\x1b[5;5H"
   ?cursor = 4,4
-PUSH "\e[r"
+push "\x1b[r"
   ?cursor = 0,0

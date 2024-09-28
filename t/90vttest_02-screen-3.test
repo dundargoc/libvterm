@@ -1,16 +1,16 @@
 # Origin mode
-INIT
-WANTSCREEN
+local vt=init()
+local screen = wantscreen(vt, "")
 
-RESET
+reset(state,screen)
 
-PUSH "\e[?6h"
-PUSH "\e[23;24r"
-PUSH "\n"
-PUSH "Bottom"
-PUSH "\e[1;1H"
-PUSH "Above"
+push "\x1b[?6h"
+push "\x1b[23;24r"
+push "\n"
+push "Bottom"
+push "\x1b[1;1H"
+push "Above"
 
-!Output
+-- Output
 ?screen_row 22 = "Above"
 ?screen_row 23 = "Bottom"

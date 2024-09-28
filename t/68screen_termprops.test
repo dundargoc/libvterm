@@ -1,17 +1,17 @@
-INIT
-WANTSCREEN p
+local vt=init()
+local screen = wantscreen(vt, "") p
 
-RESET
+reset(state,screen)
   settermprop 1 true
   settermprop 2 true
   settermprop 7 1
 
-!Cursor visibility
-PUSH "\e[?25h"
+-- Cursor visibility
+push "\x1b[?25h"
   settermprop 1 true
-PUSH "\e[?25l"
+push "\x1b[?25l"
   settermprop 1 false
 
-!Title
-PUSH "\e]2;Here is my title\a"
+-- Title
+push "\x1b]2;Here is my title\a"
   settermprop 4 ["Here is my title"]

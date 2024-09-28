@@ -1,28 +1,28 @@
 # TAB setting/resetting
-INIT
-WANTSTATE
-WANTSCREEN
+local vt=init()
+local state = wantstate(vt, "")
+local screen = wantscreen(vt, "")
 
-RESET
+reset(state,screen)
 
-PUSH "\e[2J\e[3g"
+push "\x1b[2J\x1b[3g"
 
-PUSH "\e[1;1H"
-$REP 26: PUSH "\e[3C\eH"
+push "\x1b[1;1H"
+$REP 26: push "\x1b[3C\x1bH"
 
-PUSH "\e[1;4H"
-$REP 13: PUSH "\e[0g\e[6C"
+push "\x1b[1;4H"
+$REP 13: push "\x1b[0g\x1b[6C"
 
-PUSH "\e[1;7H"
-PUSH "\e[1g\e[2g"
+push "\x1b[1;7H"
+push "\x1b[1g\x1b[2g"
 
-PUSH "\e[1;1H"
-$REP 13: PUSH "\t*"
+push "\x1b[1;1H"
+$REP 13: push "\t*"
 
-PUSH "\e[2;2H"
-$REP 13: PUSH "     *"
+push "\x1b[2;2H"
+$REP 13: push "     *"
 
-!Output
+-- Output
 ?screen_row 0 = "      *     *     *     *     *     *     *     *     *     *     *     *     *"
 ?screen_row 1 = "      *     *     *     *     *     *     *     *     *     *     *     *     *"
 

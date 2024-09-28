@@ -1,60 +1,60 @@
-INIT
-WANTSTATE g
+local vt=init()
+local state = wantstate(vt, "g")
 
-!Initial
-RESET
-PUSH "\tX"
-  putglyph 0x58 1 0,8
-PUSH "\tX"
-  putglyph 0x58 1 0,16
+-- Initial
+reset(state,screen)
+push "\tX"
+  putglyph 58 1 0,8
+push "\tX"
+  putglyph 58 1 0,16
   ?cursor = 0,17
 
-!HTS
-PUSH "\e[5G\eH"
-PUSH "\e[G\tX"
-  putglyph 0x58 1 0,4
+-- HTS
+push "\x1b[5G\x1bH"
+push "\x1b[G\tX"
+  putglyph 58 1 0,4
   ?cursor = 0,5
 
-!TBC 0
-PUSH "\e[9G\e[g"
-PUSH "\e[G\tX\tX"
-  putglyph 0x58 1 0,4
-  putglyph 0x58 1 0,16
+-- TBC 0
+push "\x1b[9G\x1b[g"
+push "\x1b[G\tX\tX"
+  putglyph 58 1 0,4
+  putglyph 58 1 0,16
   ?cursor = 0,17
 
-!TBC 3
-PUSH "\e[3g\e[50G\eH\e[G"
+-- TBC 3
+push "\x1b[3g\x1b[50G\x1bH\x1b[G"
   ?cursor = 0,0
-PUSH "\tX"
-  putglyph 0x58 1 0,49
+push "\tX"
+  putglyph 58 1 0,49
   ?cursor = 0,50
 
-!Tabstops after resize
-RESET
+-- Tabstops after resize
+reset(state,screen)
 RESIZE 30,100
 # Should be 100/8 = 12 tabstops
-PUSH "\tX"
-  putglyph 0x58 1 0,8
-PUSH "\tX"
-  putglyph 0x58 1 0,16
-PUSH "\tX"
-  putglyph 0x58 1 0,24
-PUSH "\tX"
-  putglyph 0x58 1 0,32
-PUSH "\tX"
-  putglyph 0x58 1 0,40
-PUSH "\tX"
-  putglyph 0x58 1 0,48
-PUSH "\tX"
-  putglyph 0x58 1 0,56
-PUSH "\tX"
-  putglyph 0x58 1 0,64
-PUSH "\tX"
-  putglyph 0x58 1 0,72
-PUSH "\tX"
-  putglyph 0x58 1 0,80
-PUSH "\tX"
-  putglyph 0x58 1 0,88
-PUSH "\tX"
-  putglyph 0x58 1 0,96
+push "\tX"
+  putglyph 58 1 0,8
+push "\tX"
+  putglyph 58 1 0,16
+push "\tX"
+  putglyph 58 1 0,24
+push "\tX"
+  putglyph 58 1 0,32
+push "\tX"
+  putglyph 58 1 0,40
+push "\tX"
+  putglyph 58 1 0,48
+push "\tX"
+  putglyph 58 1 0,56
+push "\tX"
+  putglyph 58 1 0,64
+push "\tX"
+  putglyph 58 1 0,72
+push "\tX"
+  putglyph 58 1 0,80
+push "\tX"
+  putglyph 58 1 0,88
+push "\tX"
+  putglyph 58 1 0,96
   ?cursor = 0,97

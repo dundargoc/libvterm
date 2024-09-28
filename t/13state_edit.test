@@ -1,304 +1,304 @@
-INIT
-UTF8 1
-WANTSTATE seb
+local vt=init()
+vterm.vterm_set_utf8(vt, true)
+local state = wantstate(vt, "") seb
 
-!ICH
-RESET
+-- ICH
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ACD"
-PUSH "\e[2D"
+push "ACD"
+push "\x1b[2D"
   ?cursor = 0,1
-PUSH "\e[@"
+push "\x1b[@"
   scrollrect 0..1,1..80 => +0,-1
   ?cursor = 0,1
-PUSH "B"
+push "B"
   ?cursor = 0,2
-PUSH "\e[3@"
+push "\x1b[3@"
   scrollrect 0..1,2..80 => +0,-3
 
-!ICH with DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[;50s"
-PUSH "\e[20G\e[@"
+-- ICH with DECSLRM
+push "\x1b[?69h"
+push "\x1b[;50s"
+push "\x1b[20G\x1b[@"
   scrollrect 0..1,19..50 => +0,-1
 
-!ICH outside DECSLRM
-PUSH "\e[70G\e[@"
+-- ICH outside DECSLRM
+push "\x1b[70G\x1b[@"
   # nothing happens
 
-!DCH
-RESET
+-- DCH
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ABBC"
-PUSH "\e[3D"
+push "ABBC"
+push "\x1b[3D"
   ?cursor = 0,1
-PUSH "\e[P"
+push "\x1b[P"
   scrollrect 0..1,1..80 => +0,+1
   ?cursor = 0,1
-PUSH "\e[3P"
+push "\x1b[3P"
   scrollrect 0..1,1..80 => +0,+3
   ?cursor = 0,1
 
-!DCH with DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[;50s"
-PUSH "\e[20G\e[P"
+-- DCH with DECSLRM
+push "\x1b[?69h"
+push "\x1b[;50s"
+push "\x1b[20G\x1b[P"
   scrollrect 0..1,19..50 => +0,+1
 
-!DCH outside DECSLRM
-PUSH "\e[70G\e[P"
+-- DCH outside DECSLRM
+push "\x1b[70G\x1b[P"
   # nothing happens
 
-!ECH
-RESET
+-- ECH
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ABC"
-PUSH "\e[2D"
+push "ABC"
+push "\x1b[2D"
   ?cursor = 0,1
-PUSH "\e[X"
+push "\x1b[X"
   erase 0..1,1..2
   ?cursor = 0,1
-PUSH "\e[3X"
+push "\x1b[3X"
   erase 0..1,1..4
   ?cursor = 0,1
 # ECH more columns than there are should be bounded
-PUSH "\e[100X"
+push "\x1b[100X"
   erase 0..1,1..80
 
-!IL
-RESET
+-- IL
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "A\r\nC"
+push "A\r\nC"
   ?cursor = 1,1
-PUSH "\e[L"
+push "\x1b[L"
   scrollrect 1..25,0..80 => -1,+0
   # TODO: ECMA-48 says we should move to line home, but neither xterm nor
   # xfce4-terminal do this
   ?cursor = 1,1
-PUSH "\rB"
+push "\rB"
   ?cursor = 1,1
-PUSH "\e[3L"
+push "\x1b[3L"
   scrollrect 1..25,0..80 => -3,+0
 
-!IL with DECSTBM
-PUSH "\e[5;15r"
-PUSH "\e[5H\e[L"
+-- IL with DECSTBM
+push "\x1b[5;15r"
+push "\x1b[5H\x1b[L"
   scrollrect 4..15,0..80 => -1,+0
 
-!IL outside DECSTBM
-PUSH "\e[20H\e[L"
+-- IL outside DECSTBM
+push "\x1b[20H\x1b[L"
   # nothing happens
 
-!IL with DECSTBM+DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[10;50s"
-PUSH "\e[5;10H\e[L"
+-- IL with DECSTBM+DECSLRM
+push "\x1b[?69h"
+push "\x1b[10;50s"
+push "\x1b[5;10H\x1b[L"
   scrollrect 4..15,9..50 => -1,+0
 
-!DL
-RESET
+-- DL
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "A\r\nB\r\nB\r\nC"
+push "A\r\nB\r\nB\r\nC"
   ?cursor = 3,1
-PUSH "\e[2H"
+push "\x1b[2H"
   ?cursor = 1,0
-PUSH "\e[M"
+push "\x1b[M"
   scrollrect 1..25,0..80 => +1,+0
   ?cursor = 1,0
-PUSH "\e[3M"
+push "\x1b[3M"
   scrollrect 1..25,0..80 => +3,+0
   ?cursor = 1,0
 
-!DL with DECSTBM
-PUSH "\e[5;15r"
-PUSH "\e[5H\e[M"
+-- DL with DECSTBM
+push "\x1b[5;15r"
+push "\x1b[5H\x1b[M"
   scrollrect 4..15,0..80 => +1,+0
 
-!DL outside DECSTBM
-PUSH "\e[20H\e[M"
+-- DL outside DECSTBM
+push "\x1b[20H\x1b[M"
   # nothing happens
 
-!DL with DECSTBM+DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[10;50s"
-PUSH "\e[5;10H\e[M"
+-- DL with DECSTBM+DECSLRM
+push "\x1b[?69h"
+push "\x1b[10;50s"
+push "\x1b[5;10H\x1b[M"
   scrollrect 4..15,9..50 => +1,+0
 
-!DECIC
-RESET
+-- DECIC
+reset(state,screen)
   erase 0..25,0..80
-PUSH "\e[20G\e[5'}"
+push "\x1b[20G\x1b[5'}"
   scrollrect 0..25,19..80 => +0,-5
 
-!DECIC with DECSTBM+DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[4;20r\e[20;60s"
-PUSH "\e[4;20H\e[3'}"
+-- DECIC with DECSTBM+DECSLRM
+push "\x1b[?69h"
+push "\x1b[4;20r\x1b[20;60s"
+push "\x1b[4;20H\x1b[3'}"
   scrollrect 3..20,19..60 => +0,-3
 
-!DECIC outside DECSLRM
-PUSH "\e[70G\e['}"
+-- DECIC outside DECSLRM
+push "\x1b[70G\x1b['}"
   # nothing happens
 
-!DECDC
-RESET
+-- DECDC
+reset(state,screen)
   erase 0..25,0..80
-PUSH "\e[20G\e[5'~"
+push "\x1b[20G\x1b[5'~"
   scrollrect 0..25,19..80 => +0,+5
 
-!DECDC with DECSTBM+DECSLRM
-PUSH "\e[?69h"
-PUSH "\e[4;20r\e[20;60s"
-PUSH "\e[4;20H\e[3'~"
+-- DECDC with DECSTBM+DECSLRM
+push "\x1b[?69h"
+push "\x1b[4;20r\x1b[20;60s"
+push "\x1b[4;20H\x1b[3'~"
   scrollrect 3..20,19..60 => +0,+3
 
-!DECDC outside DECSLRM
-PUSH "\e[70G\e['~"
+-- DECDC outside DECSLRM
+push "\x1b[70G\x1b['~"
   # nothing happens
 
-!EL 0
-RESET
+-- EL 0
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ABCDE"
-PUSH "\e[3D"
+push "ABCDE"
+push "\x1b[3D"
   ?cursor = 0,2
-PUSH "\e[0K"
+push "\x1b[0K"
   erase 0..1,2..80
   ?cursor = 0,2
 
-!EL 1
-RESET
+-- EL 1
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ABCDE"
-PUSH "\e[3D"
+push "ABCDE"
+push "\x1b[3D"
   ?cursor = 0,2
-PUSH "\e[1K"
+push "\x1b[1K"
   erase 0..1,0..3
   ?cursor = 0,2
 
-!EL 2
-RESET
+-- EL 2
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ABCDE"
-PUSH "\e[3D"
+push "ABCDE"
+push "\x1b[3D"
   ?cursor = 0,2
-PUSH "\e[2K"
+push "\x1b[2K"
   erase 0..1,0..80
   ?cursor = 0,2
 
-!SEL
-RESET
+-- SEL
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "\e[11G"
+push "\x1b[11G"
   ?cursor = 0,10
-PUSH "\e[?0K"
+push "\x1b[?0K"
   erase 0..1,10..80 selective
   ?cursor = 0,10
-PUSH "\e[?1K"
+push "\x1b[?1K"
   erase 0..1,0..11 selective
   ?cursor = 0,10
-PUSH "\e[?2K"
+push "\x1b[?2K"
   erase 0..1,0..80 selective
   ?cursor = 0,10
 
-!ED 0
-RESET
+-- ED 0
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "\e[2;2H"
+push "\x1b[2;2H"
   ?cursor = 1,1
-PUSH "\e[0J"
+push "\x1b[0J"
   erase 1..2,1..80
   erase 2..25,0..80
   ?cursor = 1,1
 
-!ED 1
-RESET
+-- ED 1
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "\e[2;2H"
+push "\x1b[2;2H"
   ?cursor = 1,1
-PUSH "\e[1J"
+push "\x1b[1J"
   erase 0..1,0..80
   erase 1..2,0..2
   ?cursor = 1,1
 
-!ED 2
-RESET
+-- ED 2
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "\e[2;2H"
+push "\x1b[2;2H"
   ?cursor = 1,1
-PUSH "\e[2J"
+push "\x1b[2J"
   erase 0..25,0..80
   ?cursor = 1,1
 
-!ED 3
-PUSH "\e[3J"
+-- ED 3
+push "\x1b[3J"
   sb_clear
 
-!SED
-RESET
+-- SED
+reset(state,screen)
   erase 0..25,0..80
-PUSH "\e[5;5H"
+push "\x1b[5;5H"
   ?cursor = 4,4
-PUSH "\e[?0J"
+push "\x1b[?0J"
   erase 4..5,4..80 selective
   erase 5..25,0..80 selective
   ?cursor = 4,4
-PUSH "\e[?1J"
+push "\x1b[?1J"
   erase 0..4,0..80 selective
   erase 4..5,0..5 selective
   ?cursor = 4,4
-PUSH "\e[?2J"
+push "\x1b[?2J"
   erase 0..25,0..80 selective
   ?cursor = 4,4
 
-!DECRQSS on DECSCA
-PUSH "\e[2\"q"
-PUSH "\eP\$q\"q\e\\"
-  output "\eP1\$r2\"q\e\\"
+-- DECRQSS on DECSCA
+push "\x1b[2\"q"
+push "\x1bP\$q\"q\x1b\\"
+  output "\x1bP1\$r2\"q\x1b\\"
 
-WANTSTATE -s+m
+local state = wantstate(vt, "") -s+m
 
-!ICH move+erase emuation
-RESET
+-- ICH move+erase emuation
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ACD"
-PUSH "\e[2D"
+push "ACD"
+push "\x1b[2D"
   ?cursor = 0,1
-PUSH "\e[@"
+push "\x1b[@"
   moverect 0..1,1..79 -> 0..1,2..80
   erase 0..1,1..2
   ?cursor = 0,1
-PUSH "B"
+push "B"
   ?cursor = 0,2
-PUSH "\e[3@"
+push "\x1b[3@"
   moverect 0..1,2..77 -> 0..1,5..80
   erase 0..1,2..5
 
-!DCH move+erase emulation
-RESET
+-- DCH move+erase emulation
+reset(state,screen)
   erase 0..25,0..80
   ?cursor = 0,0
-PUSH "ABBC"
-PUSH "\e[3D"
+push "ABBC"
+push "\x1b[3D"
   ?cursor = 0,1
-PUSH "\e[P"
+push "\x1b[P"
   moverect 0..1,2..80 -> 0..1,1..79
   erase 0..1,79..80
   ?cursor = 0,1
-PUSH "\e[3P"
+push "\x1b[3P"
   moverect 0..1,4..80 -> 0..1,1..77
   erase 0..1,77..80
   ?cursor = 0,1

@@ -1,16 +1,16 @@
-INIT
-WANTSCREEN 
+local vt=init()
+local screen = wantscreen(vt, "") 
 
-!Selective erase
-RESET
-PUSH "A\e[1\"qB\e[\"qC"
+-- Selective erase
+reset(state,screen)
+push "A\x1b[1\"qB\x1b[\"qC"
   ?screen_row 0 = "ABC"
-PUSH "\e[G\e[?J"
+push "\x1b[G\x1b[?J"
   ?screen_row 0 = " B"
 
-!Non-selective erase
-RESET
-PUSH "A\e[1\"qB\e[\"qC"
+-- Non-selective erase
+reset(state,screen)
+push "A\x1b[1\"qB\x1b[\"qC"
   ?screen_row 0 = "ABC"
-PUSH "\e[G\e[J"
+push "\x1b[G\x1b[J"
   ?screen_row 0 = ""

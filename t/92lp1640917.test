@@ -1,13 +1,13 @@
-INIT
-WANTSTATE 
+local vt=init()
+local state = wantstate(vt, "") 
 
-!Mouse reporting should not break by idempotent DECSM 1002
-PUSH "\e[?1002h"
+-- Mouse reporting should not break by idempotent DECSM 1002
+push "\x1b[?1002h"
 MOUSEMOVE 0,0 0
 MOUSEBTN d 1 0
-  output "\e[M\x20\x21\x21"
+  output "\x1b[M\x20\x21\x21"
 MOUSEMOVE 1,0 0
-  output "\e[M\x40\x21\x22"
-PUSH "\e[?1002h"
+  output "\x1b[M\x40\x21\x22"
+push "\x1b[?1002h"
 MOUSEMOVE 2,0 0
-  output "\e[M\x40\x21\x23"
+  output "\x1b[M\x40\x21\x23"

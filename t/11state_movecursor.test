@@ -1,224 +1,224 @@
-INIT
-UTF8 1
-WANTSTATE
+local vt=init()
+vterm.vterm_set_utf8(vt, true)
+local state = wantstate(vt, "")
 
-!Implicit
-PUSH "ABC"
+-- Implicit
+push "ABC"
   ?cursor = 0,3
-!Backspace
-PUSH "\b"
+-- Backspace
+push "\b"
   ?cursor = 0,2
-!Horizontal Tab
-PUSH "\t"
+-- Horizontal Tab
+push "\t"
   ?cursor = 0,8
-!Carriage Return
-PUSH "\r"
+-- Carriage Return
+push "\r"
   ?cursor = 0,0
-!Linefeed
-PUSH "\n"
+-- Linefeed
+push "\n"
   ?cursor = 1,0
 
-!Backspace bounded by lefthand edge
-PUSH "\e[4;2H"
+-- Backspace bounded by lefthand edge
+push "\x1b[4;2H"
   ?cursor = 3,1
-PUSH "\b"
+push "\b"
   ?cursor = 3,0
-PUSH "\b"
+push "\b"
   ?cursor = 3,0
 
-!Backspace cancels phantom
-PUSH "\e[4;80H"
+-- Backspace cancels phantom
+push "\x1b[4;80H"
   ?cursor = 3,79
-PUSH "X"
+push "X"
   ?cursor = 3,79
-PUSH "\b"
+push "\b"
   ?cursor = 3,78
 
-!HT bounded by righthand edge
-PUSH "\e[1;78H"
+-- HT bounded by righthand edge
+push "\x1b[1;78H"
   ?cursor = 0,77
-PUSH "\t"
+push "\t"
   ?cursor = 0,79
-PUSH "\t"
+push "\t"
   ?cursor = 0,79
 
-RESET
+reset(state,screen)
 
-!Index
-PUSH "ABC\eD"
+-- Index
+push "ABC\x1bD"
   ?cursor = 1,3
-!Reverse Index
-PUSH "\eM"
+-- Reverse Index
+push "\x1bM"
   ?cursor = 0,3
-!Newline
-PUSH "\eE"
+-- Newline
+push "\x1bE"
   ?cursor = 1,0
 
-RESET
+reset(state,screen)
 
-!Cursor Forward
-PUSH "\e[B"
+-- Cursor Forward
+push "\x1b[B"
   ?cursor = 1,0
-PUSH "\e[3B"
+push "\x1b[3B"
   ?cursor = 4,0
-PUSH "\e[0B"
+push "\x1b[0B"
   ?cursor = 5,0
 
-!Cursor Down
-PUSH "\e[C"
+-- Cursor Down
+push "\x1b[C"
   ?cursor = 5,1
-PUSH "\e[3C"
+push "\x1b[3C"
   ?cursor = 5,4
-PUSH "\e[0C"
+push "\x1b[0C"
   ?cursor = 5,5
 
-!Cursor Up
-PUSH "\e[A"
+-- Cursor Up
+push "\x1b[A"
   ?cursor = 4,5
-PUSH "\e[3A"
+push "\x1b[3A"
   ?cursor = 1,5
-PUSH "\e[0A"
+push "\x1b[0A"
   ?cursor = 0,5
 
-!Cursor Backward
-PUSH "\e[D"
+-- Cursor Backward
+push "\x1b[D"
   ?cursor = 0,4
-PUSH "\e[3D"
+push "\x1b[3D"
   ?cursor = 0,1
-PUSH "\e[0D"
+push "\x1b[0D"
   ?cursor = 0,0
 
-!Cursor Next Line
-PUSH "   "
+-- Cursor Next Line
+push "   "
   ?cursor = 0,3
-PUSH "\e[E"
+push "\x1b[E"
   ?cursor = 1,0
-PUSH "   "
+push "   "
   ?cursor = 1,3
-PUSH "\e[2E"
+push "\x1b[2E"
   ?cursor = 3,0
-PUSH "\e[0E"
+push "\x1b[0E"
   ?cursor = 4,0
 
-!Cursor Previous Line
-PUSH "   "
+-- Cursor Previous Line
+push "   "
   ?cursor = 4,3
-PUSH "\e[F"
+push "\x1b[F"
   ?cursor = 3,0
-PUSH "   "
+push "   "
   ?cursor = 3,3
-PUSH "\e[2F"
+push "\x1b[2F"
   ?cursor = 1,0
-PUSH "\e[0F"
+push "\x1b[0F"
   ?cursor = 0,0
 
-!Cursor Horizonal Absolute
-PUSH "\n"
+-- Cursor Horizonal Absolute
+push "\n"
   ?cursor = 1,0
-PUSH "\e[20G"
+push "\x1b[20G"
   ?cursor = 1,19
-PUSH "\e[G"
+push "\x1b[G"
   ?cursor = 1,0
 
-!Cursor Position
-PUSH "\e[10;5H"
+-- Cursor Position
+push "\x1b[10;5H"
   ?cursor = 9,4
-PUSH "\e[8H"
+push "\x1b[8H"
   ?cursor = 7,0
-PUSH "\e[H"
+push "\x1b[H"
   ?cursor = 0,0
 
-!Cursor Position cancels phantom
-PUSH "\e[10;78H"
+-- Cursor Position cancels phantom
+push "\x1b[10;78H"
   ?cursor = 9,77
-PUSH "ABC"
+push "ABC"
   ?cursor = 9,79
-PUSH "\e[10;80H"
-PUSH "C"
+push "\x1b[10;80H"
+push "C"
   ?cursor = 9,79
-PUSH "X"
+push "X"
   ?cursor = 10,1
 
-RESET
+reset(state,screen)
 
-!Bounds Checking
-PUSH "\e[A"
+-- Bounds Checking
+push "\x1b[A"
   ?cursor = 0,0
-PUSH "\e[D"
+push "\x1b[D"
   ?cursor = 0,0
-PUSH "\e[25;80H"
+push "\x1b[25;80H"
   ?cursor = 24,79
-PUSH "\e[B"
+push "\x1b[B"
   ?cursor = 24,79
-PUSH "\e[C"
+push "\x1b[C"
   ?cursor = 24,79
-PUSH "\e[E"
+push "\x1b[E"
   ?cursor = 24,0
-PUSH "\e[H"
+push "\x1b[H"
   ?cursor = 0,0
-PUSH "\e[F"
+push "\x1b[F"
   ?cursor = 0,0
-PUSH "\e[999G"
+push "\x1b[999G"
   ?cursor = 0,79
-PUSH "\e[99;99H"
+push "\x1b[99;99H"
   ?cursor = 24,79
 
-RESET
+reset(state,screen)
 
-!Horizontal Position Absolute
-PUSH "\e[5`"
+-- Horizontal Position Absolute
+push "\x1b[5`"
   ?cursor = 0,4
 
-!Horizontal Position Relative
-PUSH "\e[3a"
+-- Horizontal Position Relative
+push "\x1b[3a"
   ?cursor = 0,7
 
-!Horizontal Position Backward
-PUSH "\e[3j"
+-- Horizontal Position Backward
+push "\x1b[3j"
   ?cursor = 0,4
 
-!Horizontal and Vertical Position
-PUSH "\e[3;3f"
+-- Horizontal and Vertical Position
+push "\x1b[3;3f"
   ?cursor = 2,2
 
-!Vertical Position Absolute
-PUSH "\e[5d"
+-- Vertical Position Absolute
+push "\x1b[5d"
   ?cursor = 4,2
 
-!Vertical Position Relative
-PUSH "\e[2e"
+-- Vertical Position Relative
+push "\x1b[2e"
   ?cursor = 6,2
 
-!Vertical Position Backward
-PUSH "\e[2k"
+-- Vertical Position Backward
+push "\x1b[2k"
   ?cursor = 4,2
 
-RESET
+reset(state,screen)
 
-!Horizontal Tab
-PUSH "\t"
+-- Horizontal Tab
+push "\t"
   ?cursor = 0,8
-PUSH "   "
+push "   "
   ?cursor = 0,11
-PUSH "\t"
+push "\t"
   ?cursor = 0,16
-PUSH "       "
+push "       "
   ?cursor = 0,23
-PUSH "\t"
+push "\t"
   ?cursor = 0,24
-PUSH "        "
+push "        "
   ?cursor = 0,32
-PUSH "\t"
+push "\t"
   ?cursor = 0,40
 
-!Cursor Horizontal Tab
-PUSH "\e[I"
+-- Cursor Horizontal Tab
+push "\x1b[I"
   ?cursor = 0,48
-PUSH "\e[2I"
+push "\x1b[2I"
   ?cursor = 0,64
 
-!Cursor Backward Tab
-PUSH "\e[Z"
+-- Cursor Backward Tab
+push "\x1b[Z"
   ?cursor = 0,56
-PUSH "\e[2Z"
+push "\x1b[2Z"
   ?cursor = 0,40

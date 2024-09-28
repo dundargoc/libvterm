@@ -1,32 +1,32 @@
-INIT
-WANTSTATE p
+local vt=init()
+local state = wantstate(vt, "") p
 
-RESET
+reset(state,screen)
   settermprop 1 true
   settermprop 2 true
   settermprop 7 1
 
-!Set up state
-PUSH "\e[2;2H"
+-- Set up state
+push "\x1b[2;2H"
   ?cursor = 1,1
-PUSH "\e[1m"
+push "\x1b[1m"
   ?pen bold = on
 
-!Save
-PUSH "\e[?1048h"
+-- Save
+push "\x1b[?1048h"
 
-!Change state
-PUSH "\e[5;5H"
+-- Change state
+push "\x1b[5;5H"
   ?cursor = 4,4
-PUSH "\e[4 q"
+push "\x1b[4 q"
   settermprop 2 false
   settermprop 7 2
-PUSH "\e[22;4m"
+push "\x1b[22;4m"
   ?pen bold = off
   ?pen underline = 1
 
-!Restore
-PUSH "\e[?1048l"
+-- Restore
+push "\x1b[?1048l"
   settermprop 1 true
   settermprop 2 true
   settermprop 7 1
@@ -34,30 +34,30 @@ PUSH "\e[?1048l"
   ?pen bold = on
   ?pen underline = 0
 
-!Save/restore using DECSC/DECRC
-PUSH "\e[2;2H\e7"
+-- Save/restore using DECSC/DECRC
+push "\x1b[2;2H\x1b7"
   ?cursor = 1,1
 
-PUSH "\e[5;5H"
+push "\x1b[5;5H"
   ?cursor = 4,4
-PUSH "\e8"
+push "\x1b8"
   settermprop 1 true
   settermprop 2 true
   settermprop 7 1
   ?cursor = 1,1
 
-!Save twice, restore twice happens on both edge transitions
-PUSH "\e[2;10H\e[?1048h\e[6;10H\e[?1048h"
-PUSH "\e[H"
+-- Save twice, restore twice happens on both edge transitions
+push "\x1b[2;10H\x1b[?1048h\x1b[6;10H\x1b[?1048h"
+push "\x1b[H"
   ?cursor = 0,0
-PUSH "\e[?1048l"
+push "\x1b[?1048l"
   settermprop 1 true
   settermprop 2 true
   settermprop 7 1
   ?cursor = 5,9
-PUSH "\e[H"
+push "\x1b[H"
   ?cursor = 0,0
-PUSH "\e[?1048l"
+push "\x1b[?1048l"
   settermprop 1 true
   settermprop 2 true
   settermprop 7 1

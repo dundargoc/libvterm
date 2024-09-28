@@ -1,31 +1,31 @@
-INIT
-WANTSTATE f
-RESET
+local vt=init()
+local state = wantstate(vt, "") f
+reset(state,screen)
 
-!Unrecognised control 
-PUSH "\x03"
+-- Unrecognised control 
+push "\x03"
   control 03
 
-!Unrecognised CSI
-PUSH "\e[?15;2z"
-  csi 0x7a L=3f 15,2
+-- Unrecognised CSI
+push "\x1b[?15;2z"
+  csi 7a L=3f 15,2
 
-!Unrecognised OSC
-PUSH "\e]27;Something\e\\"
+-- Unrecognised OSC
+push "\x1b]27;Something\x1b\\"
   osc [27 "Something"]
 
-!Unrecognised DCS
-PUSH "\ePz123\e\\"
+-- Unrecognised DCS
+push "\x1bPz123\x1b\\"
   dcs ["z123"]
 
-!Unrecognised APC
-PUSH "\e_z123\e\\"
+-- Unrecognised APC
+push "\x1b_z123\x1b\\"
   apc ["z123"]
 
-!Unrecognised PM
-PUSH "\e^z123\e\\"
+-- Unrecognised PM
+push "\x1b^z123\x1b\\"
   pm ["z123"]
 
-!Unrecognised SOS
-PUSH "\eXz123\e\\"
+-- Unrecognised SOS
+push "\x1bXz123\x1b\\"
   sos ["z123"]
